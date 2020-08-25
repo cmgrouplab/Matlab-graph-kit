@@ -1,14 +1,18 @@
-Length=1; %length of box
-Number=1000; %number of particles;
+clear;
+Length=3; %length of box
+Number=14323; %number of particles;
 c=1;r=1;
 
 n=1:20;
 kx(1,:)=n*((2*pi)/Length);
-[kx,ky,kz] = ndgrid(kx,kx,kx);
-k=[kx(:),ky(:),kz(:)];
+[kx,ky] = ndgrid(kx,kx);
+k = [kx(:),ky(:)];
+%[kx,ky,kz] = ndgrid(kx,kx,kx);
+%k=[kx(:),ky(:),kz(:)];
 
-A=importdata('/Users/yuzheng/Documents/Results/LSD.HS.mono.3D.N=1000.JamT1.001.lsdpg.dat',' ',6);
-positions=A.data;
+A=importdata('/Users/yuzheng/Desktop/ABP_data4/position3000.txt');
+A = A(:,1:2);
+positions = A;
 positions=positions';
 
 product=k*positions;
@@ -40,7 +44,7 @@ x(1,:)=finals(1,:);
 y(1,:)=finals(2,:);
 
 scatter(x,y,'k');
-title('Sk.JamT1.001');
+title('Sk');
 xlabel('k');
 ylabel('S(k)');
 %saveas(gcf,'~/Desktop/Sk.JamT1.png');

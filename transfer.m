@@ -54,7 +54,7 @@ for k=1:length(files)
     ylabel('S(k)','Rotation',0,'fontsize',18,'Position',[-20,45])
     %ylabel('$\hat \psi(k)$','Interpreter','latex','Rotation',0,'fontsize',18,'Position',[-20,45]);
     set(gca,'PlotBoxAspectRatio',[1 1 1]);
-    saveas(gca,strcat('E:\Data\angular_averaged_', files(k).name));
+    %saveas(gca,strcat('E:\Data\angular_averaged_', files(k).name));
 
 
     %figure;
@@ -65,5 +65,5 @@ for k=1:length(files)
     I = MappedData;
     J = imadjust(I);
     figure, imshow(J)
-    saveas(gca,strcat('E:\Data\2D_', files(k).name));
+    %saveas(gca,strcat('E:\Data\2D_', files(k).name));
 end
