@@ -1,18 +1,15 @@
 clear;
-Length=3; %length of box
-Number=14323; %number of particles;
+Length=1; %length of box
+Number=79; %number of particles;
 c=1;r=1;
 
-n=1:20;
+n=1:1:100;
 kx(1,:)=n*((2*pi)/Length);
 [kx,ky] = ndgrid(kx,kx);
-k = [kx(:),ky(:)];
-%[kx,ky,kz] = ndgrid(kx,kx,kx);
-%k=[kx(:),ky(:),kz(:)];
-
-A=importdata('/Users/yuzheng/Desktop/ABP_data4/position3000.txt');
-A = A(:,1:2);
-positions = A;
+k=[kx(:),ky(:)];
+%k = [kx(:)];
+A=importdata('1.txt');
+positions=A;
 positions=positions';
 
 product=k*positions;
@@ -42,10 +39,18 @@ finals=final';
 
 x(1,:)=finals(1,:);
 y(1,:)=finals(2,:);
+x1 = x(1:200);
+y1 = y(1:200);
 
-scatter(x,y,'k');
-title('Sk');
+skData = [x1;y1];
+skData = skData';
+
+scatter(x1,y1,600,'.','k');
+title('Sk for 2D Material');
 xlabel('k');
 ylabel('S(k)');
-%saveas(gcf,'~/Desktop/Sk.JamT1.png');
+box on;
+axis([0 150 0 10])
+saveas(gcf,'sk_2D_Material.png');
+ save sk_for_2D_Material.txt -ascii skData
     

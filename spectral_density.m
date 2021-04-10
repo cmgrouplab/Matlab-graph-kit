@@ -1,17 +1,25 @@
 clear;
-filepattern = fullfile('E:\Data\HU', '*.bmp');
+filepattern = fullfile('E:\Data', '*.jpg');
 files = dir(filepattern);
 
 for k=1:length(files)
     file = fullfile(files(k).folder, files(k).name);
     originPic=imread(file);
-    numberOfpixel=350;
-    GrayPic1=rgb2gray(int32(originPic));
-    GrayPic2=imbinarize(GrayPic1,0.2);
+    %numberOfpixel=540;
+    
+    size_data = size(originPic);
+    M = size_data(1);  % 图(原始数据矩阵)的长
+    N = size_data(2);  % 图(原始数据矩阵)的宽
+    
+    originPic = im2double(originPic); 
+    GrayPic1=rgb2gray(originPic);
+    %GrayPic1=rgb2gray(int32(originPic));
+    %GrayPic1=im2gray(int32(originPic));
+    
+    %GrayPic2=imbinarize(GrayPic1,0.2);
     phi=mean(GrayPic1(:));
 
     GrayPic=GrayPic1-phi;
-
     FGrayPic=fft2(GrayPic);
     FGrayPic=fftshift(FGrayPic);
     MFGrayPic=abs(FGrayPic);
@@ -21,11 +29,12 @@ for k=1:length(files)
     MappedFlattened = mapminmax(FlattenedData, 0, 255); 
     MappedData = reshape(MappedFlattened, size(MFGrayPic)); 
 
-    sk=zeros(numberOfpixel*numberOfpixel,2);
+    sk=zeros(M*N,2);
     n=1;c=1;r=1;
-    for i=1:1:numberOfpixel
-        for j=1:1:numberOfpixel
-            sk(n,1)=sqrt((i-(numberOfpixel/2))^2+(j-(numberOfpixel/2))^2);
+    for i=1:1:M
+        for j=1:1:N
+            %sk(n,1)=sqrt((i-(numberOfpixel/2))^2+(j-(numberOfpixel/2))^2);
+            sk(n,1)=sqrt((i-(M/2))^2+(j-(N/2))^2);
             sk(n,2)=MappedData(i,j);
             n=n+1;
         end
@@ -46,24 +55,22 @@ for k=1:length(files)
     y(1,:)=finals(2,:);
 
     figure;
-    scatter(x,y,'k');
-    axis([0 100 0 90]);
+    x1 = x(1:50);
+    y1 = y(1:50);
+    x2 = log(x1);
+    y2 = log(y1);
+    scatter(x,y,300,'k.');
+    axis([0 100 0 150]);
     set(gca,'FontName','Times New Roman','FontSize',18);
     box on;
     xlabel('$k$','Interpreter','latex');
     ylabel('S(k)','Rotation',0,'fontsize',18,'Position',[-20,45])
     %ylabel('$\hat \psi(k)$','Interpreter','latex','Rotation',0,'fontsize',18,'Position',[-20,45]);
     set(gca,'PlotBoxAspectRatio',[1 1 1]);
-    %saveas(gca,strcat('E:\Data\angular_averaged_', files(k).name));
+    saveas(gca,strcat('E:\Data\angular_averaged_', files(k).name));
 
-
-    %figure;
-    %imshow(originPic);
-
-    %figure;
-    %imshow(MappedData);
     I = MappedData;
     J = imadjust(I);
     figure, imshow(J)
-    %saveas(gca,strcat('E:\Data\2D_', files(k).name));
+    saveas(gca,strcat('E:\Data\2D_', files(k).name));
 end
